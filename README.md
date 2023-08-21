@@ -16,7 +16,7 @@ The software is not yet packaged so running the visualiser is done manually:
 
 Currently, `.npz` is supported as well as all file types supported by ase (`.xyz`, `.db`, ...)
 
-## Todo list
+## Todo list
 
 - Package
 - Allow changing indices (currently just index 0 of file)
