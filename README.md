@@ -1,6 +1,6 @@
 # Timol
 
-Timol (Terminal Interface MOLecular visualiser) is a way to display the 3D structure of a molecule natively inside a terminal. The camera can be move with the mouse as expected as well as zoomed in/out by scrolling. 
+Timol (Terminal Interface MOLecular visualiser) is a way to display the 3D structure of a molecule natively inside a terminal. The camera can be moved with the mouse and zoomed in/out by scrolling. 
 
 ## Installation
 
