@@ -4,9 +4,9 @@ import sys
 from argparse import ArgumentParser, Namespace
 
 import pytermgui as ptg
-from pytermgui import Widget, PixelMatrix
 from sidebar import get_sidebar
-from plot import PlotWidget
+from plot import PlotWidget, DensePlotWidget
+from mol_reader import MoleculeReader
 import numpy as np 
 
 def _process_arguments(argv: list[str] | None = None) -> Namespace:
@@ -20,7 +20,8 @@ def _process_arguments(argv: list[str] | None = None) -> Namespace:
             (sys.argv[0]).
     """
 
-    parser = ArgumentParser(description="My first PTG application.")
+    parser = ArgumentParser(description="Timol: Terminal Interface MOLecule viewer.")
+    parser.add_argument('file', metavar="file", type=str, help='Name of the file to visualise')
 
     return parser.parse_args(argv)
 
@@ -76,6 +77,9 @@ def main(argv: list[str] | None = None) -> None:
 
     args = _process_arguments(argv)
 
+    molecule = MoleculeReader(args)
+    # sys.exit()
+
     with ptg.WindowManager() as manager:
         manager.layout = _define_layout()
 
@@ -94,26 +98,26 @@ def main(argv: list[str] | None = None) -> None:
         manager.add(footer, assign="footer")
 
         sidebar = get_sidebar()
-        plot = PlotWidget()
-        # plot = Widget()
-        # m = ["black", "blue", "black", "black", "white"]
-        # plot = PixelMatrix.from_matrix(m*10)
+        # plot = PlotWidget()
+        plot = DensePlotWidget()
 
         manager.add(sidebar, assign="sidebar")
         window = ptg.Window(plot)
         manager.add(window, assign="body")
         plot.parent = window
 
-        plot.set_spheres(
-            np.array([
-                [1,0,0],
-                [0,1,0],
-                [0,0,1],
-                [0,0,0],
-            ]),
-            [.5,.5,.5,.5],
-            ["blue", "red", "orange", "white"]
-        )
+        plot.set_spheres(*molecule.get_spheres(0))
+
+        # plot.set_spheres(
+        #     np.array([
+        #         [1,0,0],
+        #         [0,1,0],
+        #         [0,0,1],
+        #         [0,0,0],
+        #     ]),
+        #     [.5,.5,.5,.5],
+        #     ["blue", "red", "orange", "white"]
+        # )
 
         # plot.select()
 

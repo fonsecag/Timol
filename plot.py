@@ -16,7 +16,7 @@ class PlotWidget(Widget):
     R = None
     colors = None
     sizes = None
-    center = (0,0)
+    center = (10,2)
     scale = 20 # line height (i.e. pixel size) per length (pixels are 2x character width or 1x character height)
     yaw = 0
     pitch = 0
@@ -49,7 +49,6 @@ class PlotWidget(Widget):
         if self.get_width() != self.last_width or self.get_height() != self.last_height:
             self.build()
 
-        
         return self._lines
 
     def build_matrix(self):
@@ -93,7 +92,6 @@ class PlotWidget(Widget):
         return np.flip(matrix, axis = 0)
         
     def build(self) -> list[str]:
-
         lines = []
 
         # lines = [f"[@{self.bg}] "*self.width] * self.get_height()
@@ -106,8 +104,7 @@ class PlotWidget(Widget):
                 if idx != last_idx:
                     line += f"[@{self.colors[idx]}]"
                     last_idx = idx
-                line += "  "
-            
+                line += f"  "            
             lines.append(line)
 
         self._lines = [tim.parse(x) for x in lines]
@@ -189,3 +186,44 @@ class PlotWidget(Widget):
         self.last_mouse_action = action
         # else:
         #     log_write(f'{action}, {event.position}')
+
+class DensePlotWidget(PlotWidget):
+   
+    def build(self) -> list[str]:
+        lines = []
+
+        # lines = [f"[@{self.bg}] "*self.width] * self.get_height()
+        matrix = self.build_matrix()
+        n_rows = matrix.shape[0] // 2
+        for i in range(0, 2*n_rows, 2):
+            line = ''
+            last_idx_up = -1
+            last_idx_down = -1
+            for j in range(matrix.shape[1]):
+                idx_up = matrix[i][j]
+                idx_down = matrix[i+1][j]
+                if idx_up != last_idx_up:
+                    line += f"[@{self.colors[idx_up]}]"
+                    last_idx_up = idx_up
+                if idx_down != last_idx_down:
+                    line += f"[{self.colors[idx_down]}]"
+                    last_idx_down = idx_down
+                line += f"▄"        
+            lines.append(line)
+
+        self._lines = [tim.parse(x) for x in lines]
+        self.last_width = self.get_width()
+        self.last_height = self.get_height()
+        self.width = self.get_width()
+        self.height = self.get_height() // 2
+        return lines
+
+    def get_height(self):
+        if self.parent is None:
+            return 1
+        else:
+            return self.parent.height*2
+
+    def get_width(self):
+        return self.width 
+
