@@ -22,3 +22,4 @@ Currently, `.npz` is supported as well as all file types supported by ase (`.xyz
 - Allow changing indices (currently just index 0 of file)
 - Allow moving camera centre
 - Fix occasional crashing when the camera moves excessively
+- Atom edges somewhow (esp. for bigger molecules or crystals)
