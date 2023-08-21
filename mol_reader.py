@@ -7,7 +7,8 @@ class MoleculeReader:
     def __init__(self, args):
         path = args.file
 
-        self.molecules = ase.io.read(path, index = ":")
+        # self.molecules = ase.io.read(path, index = ":")
+        self.molecules = [ase.io.read(path, index = 0)]
 
     def get_N(self):
         return len(self.molecules)

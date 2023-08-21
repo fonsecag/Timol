@@ -12,7 +12,8 @@ class PlotWidget(Widget):
     last_width = 0
     last_hegiht = 0
     parent = None
-    bg = 'black'
+    # bg = 'black'
+    bg = f'0;0;0'
     R = None
     colors = None
     sizes = None
